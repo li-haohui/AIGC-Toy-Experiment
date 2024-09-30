@@ -1,2 +1,3 @@
 # FlowMatching
-Toy experiment for testing flow matching algorithm
+
+Toy experiment about distribution generation

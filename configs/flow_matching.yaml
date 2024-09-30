@@ -1,0 +1,19 @@
+seed: 42
+
+model:
+  arch: unet
+  config:
+    in_channels: 3
+    out_channels: 3
+
+train:
+  learning_rate: 1e-4
+  optimizer: Adam
+  scheduler: None
+  max_epoches: 10
+  validation_step: 10
+
+data:
+  name: CIFAR10
+  batch_size: 4
+  num_workers: 6
