@@ -22,7 +22,7 @@ def main(args):
     device = "cuda" if torch.cuda.is_available() and args.cuda else "cpu"
 
     model_args, train_args, data_args = args.model, args.train, args.data
-    model = load_model(model_args)
+    model = load_model(model_args).to(device)
 
     cifar10 = CIFAR10(
         root="./data",
@@ -43,6 +43,17 @@ def main(args):
     )
 
     global_step = 0
+    all_steps = len(loader) * train_args.max_epoches
+    print(f"Train {all_steps} steps!")
+
+    # progress_bar = tqdm(
+    #     range(0, args.max_train_steps),
+    #     initial=global_step,
+    #     desc="Steps",
+    #     # Only show the progress bar once on each machine.
+    #     # disable=not accelerator.is_local_main_process,
+    # )
+
     for epoch in tqdm(range(1, train_args.max_epoches+1)):
         for step, batch in enumerate(loader):
             img, _ = batch
@@ -66,8 +77,13 @@ def main(args):
 
             global_step += 1
 
-            if global_step % train_args.validation_step:
-                print(f"{loss.item()}")
+            if global_step % train_args.validation_step == 0:
+                print(f"{epoch}: {loss.item()}")
+
+            if global_step % train_args.checkpoint_step == 0:
+                torch.save({
+                    "model": model.state_dict()
+                }, f"checkpoint-{global_step}.pth.tar.gz")
 
 
 if __name__=="__main__":

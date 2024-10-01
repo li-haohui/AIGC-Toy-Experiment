@@ -1,4 +1,5 @@
 seed: 42
+cuda: true
 
 model:
   arch: unet
@@ -10,10 +11,12 @@ train:
   learning_rate: 1e-4
   optimizer: Adam
   scheduler: None
-  max_epoches: 10
-  validation_step: 10
+  max_epoches: 100
+  validation_step: 500
+  checkpoint_step: 20000
+  max_train_steps: 100000
 
 data:
   name: CIFAR10
-  batch_size: 4
+  batch_size: 64
   num_workers: 6

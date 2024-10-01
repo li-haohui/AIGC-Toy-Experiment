@@ -57,8 +57,10 @@ class UNet(nn.Module):
 
         t_emb = self.time_embedding(time_step)
 
+        bsz, c, h, w = x.shape
+
         # 编码器路径
-        e1 = self.encoder1(x)
+        e1 = self.encoder1(x) + t_emb[:, :, None, None].repeat(1, 1, h, w)
         e2 = self.encoder2(self.pool(e1))
         e3 = self.encoder3(self.pool(e2))
         e4 = self.encoder4(self.pool(e3))
