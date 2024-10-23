@@ -6,17 +6,29 @@ model:
   config:
     in_channels: 3
     out_channels: 3
+    model_channels: 64
+    num_res_blocks: 2
+    time_embed_dim: 64
+    class_embed_dim: 64
+    num_classes: 10
+  # pretrained_ckpt: ./checkpoint-10000.pth.tar.gz
+
+method:
+  arch: conditional_flow_matching
+  config:
+    sigma: 0
 
 train:
-  learning_rate: 1e-4
+  learning_rate: 2e-4
   optimizer: Adam
-  scheduler: None
-  max_epoches: 100
+  scheduler: StepLR
+  max_epoches: 2000
   validation_step: 500
-  checkpoint_step: 20000
-  max_train_steps: 100000
+  checkpoint_step: 50000
+  max_train_steps: 500000
+  grad_clip: 1.0
 
 data:
   name: CIFAR10
-  batch_size: 64
+  batch_size: 256
   num_workers: 6
