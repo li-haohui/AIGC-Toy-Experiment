@@ -43,7 +43,7 @@ def infer(model, step, save_dir, device, global_step=None):
 
     dt = 1.0 / step
 
-    x_t = torch.randn(64, 3, 32, 32).to(device)
+    x_t = torch.randn(36, 3, 32, 32).to(device)
 
     with torch.no_grad():
         for j in range(step):
@@ -57,14 +57,14 @@ def infer(model, step, save_dir, device, global_step=None):
         x_t = x_t/2 + 0.5
 
     if global_step is None:
-        save_image(x_t, save_dir + f"generated_FM_images_step_{step}.png", nrow=8)
+        save_image(x_t, os.path.join(save_dir, f"generated_FM_images_step_{step}.png"), nrow=6)
     else:
-        save_image(x_t, save_dir + f"generated_FM_images_step_{step}_{global_step}.png", nrow=8)
+        save_image(x_t, os.path.join(save_dir, f"generated_FM_images_step_{step}_{global_step}.png"), nrow=6)
 
     model.train()
 
 def main(args):
-    curr_log_dir, logger = training_setup()
+    curr_log_dir, logger = training_setup(args)
 
     device = "cuda" if torch.cuda.is_available() and args.cuda else "cpu"
 
@@ -98,7 +98,7 @@ def main(args):
 
     scheduler = optim.lr_scheduler.StepLR(
         optimizer=optimizer,
-        step_size=100,
+        step_size=500,
         gamma=0.8
     )
 

@@ -71,6 +71,7 @@ class DownLayer(nn.Module):
 
         res = x
         x = x + t_emb[:, :, None, None]
+        # x += t_emb[:, :, None, None]
         x = self.convlayer(x)
 
         if self.residual is not None:
@@ -130,6 +131,7 @@ class UpLayer(nn.Module):
 
         res = x
         x = x + t_emb[:, :, None, None]
+        # x += t_emb[:, :, None, None]
         x = self.convlayer(x)
 
         res = self.residual(res)
